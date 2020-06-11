@@ -54,32 +54,32 @@ export default {
         },
         browse() {
             this.$router.push({
-                path: "Browse"
+                name: "Browse"
             })
         },
         search() {
             this.$router.push({
-                path: "Search"
+                name: "Search"
             })
         },
         login() {
             this.$router.push({
-                path: "Login"
+                name: "Login"
             })
         },
         upload() {
             this.$router.push({
-                path: "Upload"
+                name: "Upload"
             })
         },
         myPhotos() {
             this.$router.push({
-                path: "MyPhotos"
+                name: "MyPhotos"
             })
         },
         myFavorite() {
             this.$router.push({
-                path: "MyFavorite"
+                name: "MyFavorite"
             })
         },
         logout() {

@@ -28,7 +28,9 @@
                 </div>
                 <div class="row border" v-for="i in 5" :key="i" v-show="i+5*(currentPage-1)<=resultCount">
                     <div class="col-3 ">
-                        <img :src="src[i-1+5*(currentPage-1)]">
+                        <a href="#" @click="details(src[i-1+5*(currentPage-1)])">
+                            <img :src="src[i-1+5*(currentPage-1)]">
+                        </a>
                     </div>
                     <div class="col-9">
                         <p>{{title[i-1+5*(currentPage-1)]}}</p>
@@ -132,7 +134,16 @@ export default {
                     vm.turnToPage(1)
                 }
             };
-        }
+        },
+        details(imgSrc) {
+            this.$router.push({
+                path: "/details",
+                name: "Details",
+                params: {
+                    src: imgSrc
+                }
+            })
+        },
     },
     mounted() {
         this.refresh()

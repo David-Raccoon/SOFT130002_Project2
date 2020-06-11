@@ -126,7 +126,13 @@ export default {
             httpRequest.send(formData)
             httpRequest.onreadystatechange = function () {
                 if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-                    console.log(httpRequest.responseText)
+                    if (httpRequest.responseText == 'success') {
+                        alert('Success!');
+                        vm.$router.push({
+                            path: "/myphotos"
+                        })
+                    } else
+                        alert(httpRequest.responseText);
                 }
             };
         },

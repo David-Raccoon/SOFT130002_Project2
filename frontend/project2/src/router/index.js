@@ -8,6 +8,7 @@ import Upload from '@/components/upload'
 import MyPhotos from '@/components/myPhotos'
 import MyFavorite from '@/components/myFavorite'
 import Modify from '@/components/modify'
+import Details from '@/components/details'
 
 Vue.use(Router)
 
@@ -52,6 +53,11 @@ export default new Router({
       path: '/modify',
       name: 'Modify',
       component: Modify
+    },
+    {
+      path: '/details',
+      name: 'Details',
+      component: Details
     }
   ]
 })

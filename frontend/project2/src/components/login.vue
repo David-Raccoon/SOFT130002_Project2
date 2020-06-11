@@ -1,26 +1,36 @@
 <template>
-<div class="container">
-    <h2>Login</h2>
-    <div class="form-group">
-        <label for="text">Username:</label>
-        <input type="text" class="form-control" v-model="username" placeholder="Enter username">
+<div>
+    <navigate></navigate>
+    <div class="container">
+        <h2>Login</h2>
+        <div class="form-group">
+            <label for="text">Username:</label>
+            <input type="text" class="form-control" v-model="username" placeholder="Enter username">
+        </div>
+        <div class="form-group">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" v-model="password" placeholder="Enter password">
+        </div>
+        <input type="submit" class="btn btn-primary" value="Login" @click="login" />
+        <div class="alert alert-danger" v-show="errorMsg!=''">
+            {{errorMsg}}
+        </div>
     </div>
-    <div class="form-group">
-        <label for="pwd">Password:</label>
-        <input type="password" class="form-control" v-model="password" placeholder="Enter password">
-    </div>
-    <input type="submit" class="btn btn-primary" value="Login" @click="login" />
-    <div class="alert alert-danger" v-show="errorMsg!=''">
-        {{errorMsg}}
-    </div>
+    <footer></footer>
 </div>
 </template>
 
 <script>
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
+import Navigate from './non-route/navigate.vue'
+import Footer from './non-route/footer.vue'
 
 export default {
+    components: {
+        Navigate,
+        Footer
+    },
     data() {
         return {
             username: '',

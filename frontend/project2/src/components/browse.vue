@@ -13,15 +13,15 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-header bg-secondary text-light">Hot content</div>
-                <div class="card-body border">
-                    <a @click="filter('scenery','','')" href="#">scenery</a>
-                </div>
-            </div>
-            <div class="card">
                 <div class="card-header bg-secondary text-light">Hot country</div>
                 <div class="card-body border" v-for="(country,index) in countries" :key="index" v-show="index<8">
                     <a @click="filter('',country,'')" href="#">{{country}}</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header bg-secondary text-light">Select a content</div>
+                <div class="card-body border" v-for="(content,index) in contents" :key="index">
+                    <a @click="filter(content,'','')" href="#">{{content}}</a>
                 </div>
             </div>
         </div>
@@ -32,13 +32,7 @@
                     <div class="row">
                         <div class="col-3">
                             <select class="form-control" v-model="selectedContent">
-                                <option value="scenery">scenery</option>
-                                <option value="city">city</option>
-                                <option value="people">people</option>
-                                <option value="animal">animal</option>
-                                <option value="building">building</option>
-                                <option value="wonder">wonder</option>
-                                <option value="other">other</option>
+                                <option v-for='(content,index) in contents' :key="index" :value="content">{{content}}</option>
                             </select>
                         </div>
                         <div class="col-3">
@@ -60,7 +54,9 @@
                 <div class="card-body border">
                     <div class="row" v-for="i in 4" :key="i">
                         <div class="col-3" v-for="j in 4" :key="j">
-                            <img :src="src[4*(i-1)+j-1+16*(currentPage-1)]" />
+                            <a href="#" @click="details(src[4*(i-1)+j-1+16*(currentPage-1)])">
+                                <img :src="src[4*(i-1)+j-1+16*(currentPage-1)]" />
+                            </a>
                         </div>
                     </div>
                     <div class="btn-group btn-group-sm">
@@ -90,6 +86,7 @@ export default {
     },
     data() {
         return {
+            contents: ['scenery', 'city', 'people', 'animal', 'building', 'wonder', 'other'],
             countries: [],
             cities: [],
             src: [],
@@ -98,7 +95,7 @@ export default {
             currentPage: 1,
             pageSize: 16,
             keyword: "",
-            selectedContent: "scenery",
+            selectedContent: "",
             selectedCountry: "",
             selectedCity: "",
         }
@@ -158,6 +155,15 @@ export default {
                 else
                     document.getElementById(String(i)).setAttribute('class', 'btn btn-primary')
             }
+        },
+        details(imgSrc) {
+            this.$router.push({
+                path: "/details",
+                name: "Details",
+                params: {
+                    src: imgSrc
+                }
+            })
         },
     },
     mounted() {

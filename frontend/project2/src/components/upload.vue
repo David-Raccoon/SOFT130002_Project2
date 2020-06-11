@@ -102,10 +102,13 @@ export default {
             httpRequest.send(formData)
             httpRequest.onreadystatechange = function () {
                 if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-                    if (httpRequest.responseText == 'success')
-                        alert('success')
-                    else {
-                        console.log(httpRequest.responseText)
+                    if (httpRequest.responseText == 'success') {
+                        alert('Success!')
+                        vm.$router.push({
+                            name: "MyPhotos"
+                        })
+                    } else {
+                        alert(httpRequest.responseText)
                     }
                 }
             };

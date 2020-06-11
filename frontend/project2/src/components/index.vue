@@ -5,7 +5,9 @@
         <div class="row" v-for="i in 3" :key=i>
             <div class="col" v-for="j in 3" :key=j>
                 <div class="alert alert-dark">
-                    <img :src="src[j-1+3*(i-1)]" />
+                    <a href="#" @click="details(src[j-1+3*(i-1)])">
+                        <img :src="src[j-1+3*(i-1)]" />
+                    </a>
                     <p>{{title[j-1+3*(i-1)]}}</p>
                     <p>{{description[j-1+3*(i-1)]}}</p>
                 </div>
@@ -37,6 +39,15 @@ export default {
         }
     },
     methods: {
+        details(imgSrc) {
+            this.$router.push({
+                path: "/details",
+                name: "Details",
+                params: {
+                    src: imgSrc
+                }
+            })
+        },
         refresh(isRandom) {
             var httpRequest = new XMLHttpRequest()
             var vm = this
