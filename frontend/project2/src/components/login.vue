@@ -1,8 +1,9 @@
 <template>
 <div>
-    <navigate></navigate>
+    <Navigate />
     <div class="container">
         <h2>Login</h2>
+        <a href="#" @click="register">Do not have an account? Register now!</a>
         <div class="form-group">
             <label for="text">Username:</label>
             <input type="text" class="form-control" v-model="username" placeholder="Enter username">
@@ -16,7 +17,7 @@
             {{errorMsg}}
         </div>
     </div>
-    <footer></footer>
+    <Footer />
 </div>
 </template>
 
@@ -58,6 +59,11 @@ export default {
                         vm.errorMsg = httpRequest.responseText
                 }
             };
+        },
+        register() {
+            this.$router.push({
+                name: "Register"
+            })
         }
     }
 }

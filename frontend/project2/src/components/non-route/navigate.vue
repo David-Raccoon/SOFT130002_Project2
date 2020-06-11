@@ -48,45 +48,62 @@ export default {
     },
     methods: {
         home() {
+            if (this.$route.name == "Index")
+                return
             this.$router.push({
                 name: "Index"
             })
         },
         browse() {
+            if (this.$route.name == "Browse")
+                return
             this.$router.push({
                 name: "Browse"
             })
         },
         search() {
+            if (this.$route.name == "Search")
+                return
             this.$router.push({
                 name: "Search"
             })
         },
         login() {
+            if (this.$route.name == "Login")
+                return
             this.$router.push({
                 name: "Login"
             })
         },
         upload() {
+            if (this.$route.name == "Upload")
+                return
             this.$router.push({
                 name: "Upload"
             })
         },
         myPhotos() {
+            if (this.$route.name == "MyPhotos")
+                return
             this.$router.push({
                 name: "MyPhotos"
             })
         },
         myFavorite() {
+            if (this.$route.name == "MyFavorite")
+                return
             this.$router.push({
                 name: "MyFavorite"
             })
         },
         logout() {
             localStorage.removeItem('username')
-            this.$router.push({
-                name: "Index"
-            })
+            if (this.$route.name == "Index")
+                this.$router.go(0)
+            else
+                this.$router.push({
+                    name: "Index"
+                })
         },
     }
 }
