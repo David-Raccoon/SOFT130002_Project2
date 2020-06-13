@@ -7,7 +7,7 @@ if (mysqli_connect_errno()) {
     die(mysqli_connect_error());
 }
 
-$sql = "select max(ImageID) from `travelimage`";
+$sql = 'SELECT max(ImageID) FROM travelimage';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 // 获取上传的图片ID
@@ -17,26 +17,26 @@ $title = $_POST['title'];
 $description = $_POST['description'];
 $content = $_POST['content'];
 
-$sql = "select * from traveluser where UserName=" . "\"" . $_POST['username'] . "\"";
+$sql = 'SELECT * FROM traveluser WHERE UserName="' . $_POST['username'] . '"';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 // 获取用户ID
 $uid = $row['UID'];
 
-$sql = "select * from geocountries where CountryName=" . "\"" . $_POST['country'] . "\"";
+$sql = 'SELECT * FROM geocountries WHERE CountryName="' . $_POST['country'] . '"';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 // 获取国家ISO码
 $countryCodeISO = $row['ISO'];
 
-$sql = "select * from `geocities` where CountryCodeISO=\"" . $countryCodeISO . "\" and AsciiName=\"" . $_POST['city'] . "\"";
+$sql = 'SELECT * FROM geocities WHERE CountryCodeISO="' . $countryCodeISO . '" AND AsciiName="' . $_POST['city'] . '"';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 // 获取城市ID
 $cityCode = $row['GeoNameID'];
 
 // 生成图片名
-$imgName = date('Y_m_d_h_i_s_', time()) . $_POST['username'] . ".jpg";
+$imgName = date('Y_m_d_h_i_s_', time()) . $_POST['username'] . '.jpg';
 
 // 保存图片和裁剪后的图片
 $originPath = "C:\\xampp\\htdocs\\SOFT130002_Project2\\travel-images\\origin\\" . $imgName;
@@ -44,7 +44,7 @@ $squarePath = "C:\\xampp\\htdocs\\SOFT130002_Project2\\travel-images\\square\\" 
 move_uploaded_file($_FILES["img"]["tmp_name"], $originPath);
 img_cut_square($originPath, $squarePath, 150);
 
-$sql = 'insert into travelimage (ImageID,Title,Description,CityCode,CountryCodeISO,UID,PATH,Content) values (' . $imageID . ',"' . $title . '","' . $description . '",' . $cityCode . ',"' . $countryCodeISO . '",' . $uid . ',"' . $imgName . '","' . $content . '")';
+$sql = 'INSERT INTO travelimage (ImageID,Title,Description,CityCode,CountryCodeISO,UID,PATH,Content) values (' . $imageID . ',"' . $title . '","' . $description . '",' . $cityCode . ',"' . $countryCodeISO . '",' . $uid . ',"' . $imgName . '","' . $content . '")';
 if (mysqli_query($connection, $sql)) {
     echo 'success';
 } else {

@@ -8,7 +8,7 @@ if (mysqli_connect_errno()) {
 }
 
 $res = array();
-$sql = "select * from `travelimage` where Title like \"%" . $_GET['keyword'] . "%\"";
+$sql = 'SELECT * FROM `travelimage` WHERE Title LIKE "%' . $_GET['keyword'] . '%"';
 $result = mysqli_query($connection, $sql);
 while ($row = mysqli_fetch_assoc($result)) {
     array_push($res, $row['PATH'] . ":" . $row['Title'] . ":" . $row['Description']);

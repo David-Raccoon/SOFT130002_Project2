@@ -8,11 +8,11 @@ if (mysqli_connect_errno()) {
 }
 
 $res = array();
-$sql = "select * from `geocountries` where CountryName=\"" . $_GET['country'] . "\"";
+$sql = 'SELECT * FROM geocountries WHERE CountryName="' . $_GET['country'] . '"';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 
-$sql = "select * from `travelimage` where CountryCodeISO=\"" . $row['ISO'] . "\"";
+$sql = 'SELECT * FROM travelimage WHERE CountryCodeISO="' . $row['ISO'] . '"';
 
 $result = mysqli_query($connection, $sql);
 $cityCodeCount = array();
@@ -27,7 +27,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 arsort($cityCodeCount);
 $res = array();
 foreach ($cityCodeCount as $cityCode => $count) {
-    $sql = "select * from geocities where GeoNameID=\"" . $cityCode . "\"";
+    $sql = 'SELECT * FROM geocities WHERE GeoNameID="' . $cityCode . '"';
     $result = mysqli_query($connection, $sql);
     $row = mysqli_fetch_assoc($result);
     array_push($res, $row['AsciiName']);

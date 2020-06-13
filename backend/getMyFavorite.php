@@ -7,18 +7,18 @@ if (mysqli_connect_errno()) {
     die(mysqli_connect_error());
 }
 
-$sql = "select * from traveluser where UserName=" . "\"" . $_GET['username'] . "\"";
+$sql = 'SELECT * FROM traveluser WHERE UserName=' . '"' . $_GET['username'] . '"';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 // 获取用户ID
 $uid = $row['UID'];
 
-$sql = "select * from travelimagefavor where UID=" . "\"" . $uid . "\"";
+$sql = 'SELECT * FROM travelimagefavor WHERE UID=' . '"' . $uid . '"';
 $result = mysqli_query($connection, $sql);
 $res = array();
 while ($row = mysqli_fetch_assoc($result)) {
     $imageID = $row['ImageID'];
-    $sql = "select * from travelimage where ImageID=" . "\"" . $imageID . "\"";
+    $sql = 'SELECT * FROM travelimage WHERE ImageID=' . '"' . $imageID . '"';
     $result_image = mysqli_query($connection, $sql);
     $row_image = mysqli_fetch_assoc($result_image);
     array_push($res, $row_image['PATH'] . ":" . $row_image['Title'] . ":" . $row_image['Description']);

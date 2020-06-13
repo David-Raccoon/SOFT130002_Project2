@@ -7,13 +7,13 @@ if (mysqli_connect_errno()) {
     die(mysqli_connect_error());
 }
 
-$sql = "select * from traveluser where UserName=" . "\"" . $_GET['username'] . "\"";
+$sql = 'SELECT * FROM traveluser WHERE UserName=' . '"' . $_GET['username'] . '"';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 // 获取用户ID
 $uid = $row['UID'];
 
-$sql = "select * from travelimage where UID=" . "\"" . $uid . "\"";
+$sql = 'SELECT * FROM travelimage WHERE UID=' . '"' . $uid . '"';
 $result = mysqli_query($connection, $sql);
 $res = array();
 while ($row = mysqli_fetch_assoc($result)) {

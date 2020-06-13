@@ -12,20 +12,20 @@ $title = $_POST['title'];
 $description = $_POST['description'];
 $content = $_POST['content'];
 
-$sql = "select * from geocountries where CountryName=" . "\"" . $_POST['country'] . "\"";
+$sql = 'SELECT * FROM geocountries WHERE CountryName=' . '"' . $_POST['country'] . '"';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 // 获取国家ISO码
 $countryCodeISO = $row['ISO'];
 
-$sql = "select * from `geocities` where CountryCodeISO=\"" . $countryCodeISO . "\" and AsciiName=\"" . $_POST['city'] . "\"";
+$sql = 'SELECT * FROM geocities WHERE CountryCodeISO="' . $countryCodeISO . '" AND AsciiName="' . $_POST['city'] . '"';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 // 获取城市ID
 $cityCode = $row['GeoNameID'];
 
 if (!array_key_exists('img', $_FILES)) {
-    $sql = 'UPDATE `travelimage` SET 
+    $sql = 'UPDATE travelimage SET 
         Title="' . $title .
         '",Description="' . $description .
         '",Content="' . $content .
@@ -56,7 +56,7 @@ if (!array_key_exists('img', $_FILES)) {
         echo ("Error deleting $squareFile");
     }
 
-    $sql = 'UPDATE `travelimage` SET 
+    $sql = 'UPDATE travelimage SET 
         Title="' . $title .
         '",Description="' . $description .
         '",Content="' . $content .
@@ -70,6 +70,9 @@ if (!array_key_exists('img', $_FILES)) {
         echo 'error: ' . mysqli_error(($connection));
     }
 }
+
+mysqli_free_result($result);
+mysqli_close($connection);
 
 // 将图片裁剪为正方形
 function img_cut_square($src_path, $des_path, $des_w = 150)

@@ -7,11 +7,11 @@ if (mysqli_connect_errno()) {
     die(mysqli_connect_error());
 }
 
-$sql = "select * from `geocountries` where CountryName=\"" . $_GET['country'] . "\"";
+$sql = 'SELECT * FROM geocountries WHERE CountryName="' . $_GET['country'] . '"';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 
-$sql = "select distinct AsciiName from `geocities` where CountryCodeISO=\"" . $row['ISO'] . "\" order by AsciiName";
+$sql = 'SELECT DISTINCT AsciiName FROM geocities WHERE CountryCodeISO="' . $row['ISO'] . '" order by AsciiName';
 $result = mysqli_query($connection, $sql);
 $res = array();
 while ($row = mysqli_fetch_assoc($result)) {

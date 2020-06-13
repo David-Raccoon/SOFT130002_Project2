@@ -12,7 +12,7 @@ $res = array();
 
 if ($_GET['random'] == 'false') {
     $image = array();
-    $sql = "select * from travelimagefavor";
+    $sql = 'SELECT * FROM travelimagefavor';
     $result = mysqli_query($connection, $sql);
     while ($row = mysqli_fetch_assoc($result)) {
         if (array_key_exists($row['ImageID'], $image)) {
@@ -21,14 +21,14 @@ if ($_GET['random'] == 'false') {
     }
     arsort($image);
     foreach ($image as $imageID => $occurTimes) {
-        $sql = "select * from travelimage where ImageID=" . $imageID;
+        $sql = 'SELECT * FROM travelimage WHERE ImageID=' . $imageID;
         $result = mysqli_query($connection, $sql);
         $row = mysqli_fetch_assoc($result);
         array_push($res, $row['PATH'] . ":" . $row['Title'] . ":" . $row['Description']);
     }
     // 图片按热度选择不够时随机填充
     while (sizeof($res) < NUM) {
-        $sql = 'select * from travelimage order by rand() limit 1';
+        $sql = 'SELECT * FROM travelimage ORDER BY rand() LIMIT 1';
         $result = mysqli_query($connection, $sql);
         $row = mysqli_fetch_assoc($result);
         if (array_key_exists($row['ImageID'], $image))
@@ -37,7 +37,7 @@ if ($_GET['random'] == 'false') {
             array_push($res, $row['PATH'] . ":" . $row['Title'] . ":" . $row['Description']);
     }
 } else {
-    $sql = 'select * from travelimage order by rand() limit ' . NUM;
+    $sql = 'SELECT * FROM travelimage ORDER BY rand() LIMIT ' . NUM;
     $result = mysqli_query($connection, $sql);
     while ($row = mysqli_fetch_assoc($result)) {
         array_push($res, $row['PATH'] . ":" . $row['Title'] . ":" . $row['Description']);

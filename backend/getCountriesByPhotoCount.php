@@ -7,7 +7,7 @@ if (mysqli_connect_errno()) {
     die(mysqli_connect_error());
 }
 
-$sql = "select * from travelimage";
+$sql = 'SELECT * FROM travelimage';
 $result = mysqli_query($connection, $sql);
 $countryCodeCount = array();
 while ($row = mysqli_fetch_assoc($result)) {
@@ -19,7 +19,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 arsort($countryCodeCount);
 $res = array();
 foreach ($countryCodeCount as $countryCode => $count) {
-    $sql = "select * from geocountries where ISO=\"" . $countryCode . "\"";
+    $sql = 'SELECT * FROM geocountries WHERE ISO="' . $countryCode . '"';
     $result = mysqli_query($connection, $sql);
     $row = mysqli_fetch_assoc($result);
     array_push($res, $row['CountryName']);

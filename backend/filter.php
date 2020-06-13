@@ -16,41 +16,42 @@ if ($_GET['content'] != "") {
 }
 
 if ($_GET['country'] != "") {
-    $sql = "select * from `geocountries` where CountryName=\"" . $_GET['country'] . "\"";
+    $sql = 'SELECT * FROM geocountries WHERE CountryName="' . $_GET['country'] . '"';
     $result = mysqli_query($connection, $sql);
     $row = mysqli_fetch_assoc($result);
     $countryCodeISO = $row['ISO'];
 }
 
 if ($_GET['city'] != "") {
-    $sql = "select * from `geocities` where AsciiName=\"" . $_GET['city'] . "\"" . " and CountryCodeISO=\"" . $countryCodeISO . "\"";
+    $sql = 'SELECT * FROM geocities WHERE AsciiName="' . $_GET['city'] . '"' . ' AND CountryCodeISO="' . $countryCodeISO . '"';
     $result = mysqli_query($connection, $sql);
     $row = mysqli_fetch_assoc($result);
     $cityCode = $row['GeoNameID'];
 }
 
-$sql = "select * from `travelimage` where ";
+$sql = 'SELECT * FROM travelimage WHERE ';
 if ($content == '')
-    $sql = $sql . "Content like \"%\" ";
+    $sql = $sql . 'Content LIKE "%" ';
 else
-    $sql = $sql . "Content=\"" . $content . "\" ";
+    $sql = $sql . 'Content="' . $content . '" ';
 
 if ($countryCodeISO == '')
-    $sql = $sql . "and CountryCodeISO like \"%\" ";
+    $sql = $sql . 'AND CountryCodeISO LIKE "%" ';
 else
-    $sql = $sql . "and CountryCodeISO=\"" . $countryCodeISO . "\" ";
+    $sql = $sql . 'AND CountryCodeISO="' . $countryCodeISO . '" ';
 
 if ($cityCode == '')
-// 有一些CityCode是NULL会被过滤掉
+    // 有一些CityCode是NULL会被过滤掉
     $sql = $sql;
 else
-    $sql = $sql . "and CityCode=\"" . $cityCode . "\" ";
+    $sql = $sql . 'AND CityCode="' . $cityCode . '" ';
 
 $result = mysqli_query($connection, $sql);
 $res = array();
 while ($row = mysqli_fetch_assoc($result)) {
     array_push($res, $row['PATH']);
 }
+
 mysqli_free_result($result);
 mysqli_close($connection);
 response($res);

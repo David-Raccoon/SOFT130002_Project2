@@ -5,7 +5,7 @@ $connection = mysqli_connect(DBHOST, DBUSER, DBPASS, DBNAME);
 if (mysqli_connect_errno()) {
 	die(mysqli_connect_error());
 }
-$sql = "select * from traveluser where UserName=" . "\"" . $_POST['username'] . "\"";
+$sql = 'SELECT * FROM traveluser WHERE UserName=' . '"' . $_POST['username'] . '"';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 if ($row == null)

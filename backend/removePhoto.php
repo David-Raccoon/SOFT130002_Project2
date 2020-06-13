@@ -14,7 +14,7 @@ $row = mysqli_fetch_assoc($result);
 $sql = 'DELETE FROM `travelimagefavor` WHERE ImageID=' . $row['ImageID'];
 mysqli_query($connection, $sql);
 
-$sql = "delete from travelimage where PATH=" . "\"" . $_GET['src'] . "\"";
+$sql = 'DELETE FROM travelimage WHERE PATH="' . $_GET['src'] . '"';
 if (mysqli_query($connection, $sql)) {
     $originFile = "C:\\xampp\\htdocs\\SOFT130002_Project2\\travel-images\\origin\\" . $_GET['src'];
     $squareFile = "C:\\xampp\\htdocs\\SOFT130002_Project2\\travel-images\\square\\" . $_GET['src'];
@@ -28,4 +28,6 @@ if (mysqli_query($connection, $sql)) {
     echo 'error: ' . mysqli_error(($connection));
 }
 
+mysqli_free_result($result);
+mysqli_close($connection);
 ?>

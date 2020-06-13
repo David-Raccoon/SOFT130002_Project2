@@ -7,14 +7,13 @@ if (mysqli_connect_errno()) {
     die(mysqli_connect_error());
 }
 
-$res = array();
-$sql = 'SELECT * FROM travelimage WHERE Description LIKE "%' . $_GET['keyword'] . '%"';
+$count = 0;
+$sql = 'SELECT * FROM travelimagefavor WHERE ImageID=' . $_GET['imageID'];
 $result = mysqli_query($connection, $sql);
 while ($row = mysqli_fetch_assoc($result)) {
-    array_push($res, $row['PATH'] . ":" . $row['Title'] . ":" . $row['Description']);
+    $count++;
 }
-
+echo $count;
 mysqli_free_result($result);
 mysqli_close($connection);
-response($res);
 ?>

@@ -1,25 +1,22 @@
 <?php header('Access-Control-Allow-Origin:*'); ?>
 <?php require_once('config.php'); ?>
-<?php require_once('response.php'); ?>
 <?php
 $connection = mysqli_connect(DBHOST, DBUSER, DBPASS, DBNAME);
 if (mysqli_connect_errno()) {
     die(mysqli_connect_error());
 }
 
-$sql = 'SELECT * FROM traveluser WHERE UserName=' . '"' . $_GET['username'] . '"';
+$sql = 'SELECT max(UID) FROM traveluser';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
-// 获取用户ID
-$uid = $row['UID'];
+// 获取新的用户ID
+$uid = $row['max(UID)'] + 1;
 
-$sql = 'SELECT * FROM travelimage WHERE PATH="' . $_GET['src'] . '"';
-$result = mysqli_query($connection, $sql);
-$row = mysqli_fetch_assoc($result);
-// 获取用户ID
-$imageID = $row['ImageID'];
+// 检查工作在前端完成
 
-$sql = 'DELETE FROM travelimagefavor WHERE UID=' . $uid . ' AND ImageID=' . $imageID;
+$sql = 'INSERT INTO traveluser (UID,Email,UserName,Pass) 
+VALUES (' . $uid . ',"' . $_POST['email'] . '","' . $_POST['username'] . '","' . $_POST['password'] . '")';
+
 if (mysqli_query($connection, $sql)) {
     echo 'success';
 } else {

@@ -7,7 +7,7 @@ if (mysqli_connect_errno()) {
     die(mysqli_connect_error());
 }
 
-$sql = "select * from travelimage where PATH=" . "\"" . $_GET['src'] . "\"";
+$sql = 'SELECT * FROM travelimage WHERE PATH=' . '"' . $_GET['src'] . '"';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 
@@ -17,20 +17,30 @@ $content = $row['Content'];
 $countryCodeISO = $row['CountryCodeISO'];
 $cityCode = $row['CityCode'];
 $imageID = $row['ImageID'];
+$uid = $row['UID'];
 
-$sql = 'SELECT * FROM `geocountries` WHERE ISO="' . $countryCodeISO . '"';
+$sql = 'SELECT * FROM geocountries WHERE ISO="' . $countryCodeISO . '"';
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
 // 获取国家名字
 $country = $row['CountryName'];
 
-$sql = 'SELECT * FROM `geocities` WHERE GeoNameID=' . $cityCode;
+$sql = 'SELECT * FROM geocities WHERE GeoNameID=' . $cityCode;
+$result = mysqli_query($connection, $sql);
+// 获取城市名字
+if ($result != null) {
+    $row = mysqli_fetch_assoc($result);
+    $city = $row['AsciiName'];
+} else
+    $city = '';
+
+$sql = 'SELECT * FROM traveluser WHERE UID=' . $uid;
 $result = mysqli_query($connection, $sql);
 $row = mysqli_fetch_assoc($result);
-// 获取国家名字
-$city = $row['AsciiName'];
+// 获取作者名字
+$userName = $row['UserName'];
 
-echo $title . ":" . $description . ":" . $content . ":" . $country . ":" . $city . ":" . $imageID;
+echo $title . ":" . $description . ":" . $content . ":" . $country . ":" . $city . ":" . $imageID . ":" . $userName;
 mysqli_free_result($result);
 mysqli_close($connection);
 ?>
