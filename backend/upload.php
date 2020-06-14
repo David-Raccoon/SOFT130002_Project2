@@ -39,8 +39,8 @@ $cityCode = $row['GeoNameID'];
 $imgName = date('Y_m_d_h_i_s_', time()) . $_POST['username'] . '.jpg';
 
 // 保存图片和裁剪后的图片
-$originPath = "C:\\xampp\\htdocs\\SOFT130002_Project2\\travel-images\\origin\\" . $imgName;
-$squarePath = "C:\\xampp\\htdocs\\SOFT130002_Project2\\travel-images\\square\\" . $imgName;
+$originPath = UPLOAD_PATH . "origin/" . $imgName;
+$squarePath = UPLOAD_PATH . "square/" . $imgName;
 move_uploaded_file($_FILES["img"]["tmp_name"], $originPath);
 img_cut_square($originPath, $squarePath, 150);
 

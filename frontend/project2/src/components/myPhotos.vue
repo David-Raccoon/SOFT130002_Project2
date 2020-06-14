@@ -1,6 +1,7 @@
 <template>
 <div>
     <Navigate />
+    <Banner />
     <div class="container">
         <div class="card">
             <div class="card-header bg-secondary text-light">My Photos</div>
@@ -26,25 +27,39 @@
                         </div>
                     </div>
                 </div>
+                <div v-show="resultCount==0" class="row">
+                    <div class="col-9">
+                        You haven't uploaded a photo yet. Go to
+                        <a href="#" @click="upload">Upload</a>
+                        to post a photo here!
+                    </div>
+                    <img class="col-3" src="../assets/empty.jpg">
+                </div>
                 <div class="row border" v-for="i in 5" :key="i" v-show="i+5*(currentPage-1)<=resultCount">
-                    <div class="col-3 ">
+                    <div class="col-3">
                         <a href="#" @click="details(src[i-1+5*(currentPage-1)])">
                             <img :src="src[i-1+5*(currentPage-1)]">
                         </a>
                     </div>
-                    <div class="col-9">
+                    <div class="col-6">
                         <p>{{title[i-1+5*(currentPage-1)]}}</p>
-                        <p>{{description[i-1+5*(currentPage-1)]}}</p>
+                        <p class="description">{{description[i-1+5*(currentPage-1)]}}</p>
+                    </div>
+                    <div class="col-3">
+                        <br /><br />
                         <button class="btn btn-primary" @click="modify(src[i-1+5*(currentPage-1)])">Modify</button>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" @click="deleteIndex=i-1+5*(currentPage-1);deleteTitle=title[deleteIndex]">
                             Delete
                         </button>
                     </div>
                 </div>
-                <div class="btn-group btn-group-sm">
-                    <button type="button" v-show="pageCount>=1" class="btn btn-primary" @click="turnToPage(currentPage-1)">《</button>
-                    <button type="button" v-for="i in pageCount" :key="i" :id="i" class="btn btn-primary" @click="turnToPage(i)">{{i}}</button>
-                    <button type="button" v-show="pageCount>=1" class="btn btn-primary" @click="turnToPage(currentPage+1)">》</button>
+                <br />
+                <div style="text-align:center">
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" v-show="pageCount>=1" class="btn btn-primary" @click="turnToPage(currentPage-1)">《</button>
+                        <button type="button" v-for="i in pageCount" :key="i" :id="i" class="btn btn-primary" @click="turnToPage(i)">{{i}}</button>
+                        <button type="button" v-show="pageCount>=1" class="btn btn-primary" @click="turnToPage(currentPage+1)">》</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -59,11 +74,17 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import Vue from 'vue'
 import Navigate from './non-route/navigate.vue'
 import Footer from './non-route/footer.vue'
+import Banner from './non-route/banner.vue'
+import {
+    backend_path,
+    img_path
+} from '../assets/config.js'
 
 export default {
     components: {
         Navigate,
-        Footer
+        Footer,
+        Banner
     },
     data() {
         return {
@@ -101,7 +122,7 @@ export default {
             var vm = this
             var path = this.src[this.deleteIndex].split('/')
             var imgName = path[path.length - 1]
-            httpRequest.open('GET', 'http://localhost:8080/SOFT130002_Project2/backend/removePhoto.php?src=' + imgName, true)
+            httpRequest.open('GET', backend_path + 'removePhoto.php?src=' + imgName, true)
             httpRequest.send()
             httpRequest.onreadystatechange = function () {
                 if (httpRequest.readyState == 4 && httpRequest.status == 200) {
@@ -126,7 +147,7 @@ export default {
         refresh() {
             var httpRequest = new XMLHttpRequest()
             var vm = this
-            httpRequest.open('GET', 'http://localhost:8080/SOFT130002_Project2/backend/getMyPhotos.php?username=' + localStorage.getItem('username'), true)
+            httpRequest.open('GET', backend_path + 'getMyPhotos.php?username=' + localStorage.getItem('username'), true)
             httpRequest.send()
             httpRequest.onreadystatechange = function () {
                 if (httpRequest.readyState == 4 && httpRequest.status == 200) {
@@ -135,12 +156,12 @@ export default {
                     vm.title = []
                     vm.description = []
                     for (let key in res) {
-                        Vue.set(vm.src, key, "http://localhost:8080/SOFT130002_Project2/travel-images/square/" + res[key].split(':')[0])
+                        if (res[key] == '')
+                            continue
+                        Vue.set(vm.src, key, img_path + 'square/' + res[key].split(':')[0])
                         Vue.set(vm.title, key, res[key].split(':')[1])
                         Vue.set(vm.description, key, res[key].split(':')[2])
                     }
-                    vm.page = (vm.src.length - 1) / 5 + 1
-                    vm.resultCount = vm.src.length
                     vm.setPage()
                     vm.turnToPage(1)
                 }
@@ -155,6 +176,13 @@ export default {
                 }
             })
         },
+        upload() {
+            if (this.$route.name == "Upload")
+                return
+            this.$router.push({
+                name: "Upload"
+            })
+        },
     },
     mounted() {
         this.refresh()
@@ -163,4 +191,11 @@ export default {
 </script>
 
 <style scoped>
+.description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
 </style>

@@ -1,6 +1,7 @@
 <template>
 <div>
     <Navigate />
+    <Banner />
     <div class="container">
         <div class="card">
             <div class="card-header bg-secondary text-light">Upload</div>
@@ -44,10 +45,13 @@
                         <button class="btn btn-success" @click="upload">upload</button>
                     </div>
                 </div>
+                <br />
+                <div class="alert alert-danger" v-show="errorMsg!=''">
+                    {{errorMsg}}
+                </div>
             </div>
         </div>
     </div>
-
     <Footer />
 </div>
 </template>
@@ -58,11 +62,17 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import Vue from 'vue'
 import Navigate from './non-route/navigate.vue'
 import Footer from './non-route/footer.vue'
+import Banner from './non-route/banner.vue'
+import {
+    backend_path,
+    img_path
+} from '../assets/config.js'
 
 export default {
     components: {
         Navigate,
-        Footer
+        Footer,
+        Banner
     },
     data() {
         return {
@@ -74,6 +84,7 @@ export default {
             selectedCity: "",
             countries: [],
             cities: [],
+            errorMsg: "",
             file: null
         }
     },
@@ -87,7 +98,17 @@ export default {
                 vm.previewSrc = this.result;
             }
         },
+        checklist() {},
         upload() {
+            if (this.title.indexOf(':') != -1 || this.title.indexOf('&') != -1 || this.description.indexOf(':') != -1 || this.description.indexOf('&') != -1) {
+                this.errorMsg = 'The title or description should not contain special characters like : or &'
+                return
+            }
+            if (this.title == '' || this.description == '' || this.selectedContent == '' || this.selectedCountry == '' || this.selectedCity == '' || this.file == null) {
+                this.errorMsg = 'Your have not finished all the information yet!'
+                return
+            }
+
             var formData = new FormData()
             formData.append('title', this.title)
             formData.append('description', this.description)
@@ -98,7 +119,7 @@ export default {
             formData.append('username', localStorage.getItem('username'))
             var httpRequest = new XMLHttpRequest()
             var vm = this
-            httpRequest.open('POST', 'http://localhost:8080/SOFT130002_Project2/backend/upload.php', true)
+            httpRequest.open('POST', backend_path + 'upload.php', true)
             httpRequest.send(formData)
             httpRequest.onreadystatechange = function () {
                 if (httpRequest.readyState == 4 && httpRequest.status == 200) {
@@ -117,7 +138,7 @@ export default {
     mounted() {
         var httpRequest = new XMLHttpRequest()
         var vm = this
-        httpRequest.open('GET', 'http://localhost:8080/SOFT130002_Project2/backend/getAllCountries.php', true)
+        httpRequest.open('GET', backend_path + 'getAllCountries.php', true)
         httpRequest.send()
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState == 4 && httpRequest.status == 200) {
@@ -129,7 +150,7 @@ export default {
         selectedCountry: function () {
             var httpRequest = new XMLHttpRequest()
             var vm = this
-            httpRequest.open('GET', 'http://localhost:8080/SOFT130002_Project2/backend/getAllCities.php?country=' + this.selectedCountry, true)
+            httpRequest.open('GET', backend_path + 'getAllCities.php?country=' + this.selectedCountry, true)
             httpRequest.send()
             httpRequest.onreadystatechange = function () {
                 if (httpRequest.readyState == 4 && httpRequest.status == 200) {

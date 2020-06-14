@@ -2,7 +2,7 @@
 <div>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <!-- Brand/logo -->
-        <a class="navbar-brand" href="#">Logo</a>
+        <a class="navbar-brand" href="#">Travel!</a>
 
         <!-- Links -->
         <ul class="navbar-nav">
@@ -20,7 +20,7 @@
             </li>
             <li class="nav-item dropdown" v-show="isLogin">
                 <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                    My acount
+                    My acount: {{username}}
                 </a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#" @click="upload">Upload</a>
@@ -43,7 +43,8 @@ import 'jquery'
 export default {
     data() {
         return {
-            isLogin: localStorage.getItem('username') != undefined
+            isLogin: localStorage.getItem('username') != undefined,
+            username: localStorage.getItem('username')
         }
     },
     methods: {
@@ -108,6 +109,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-</style>

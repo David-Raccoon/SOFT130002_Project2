@@ -58,6 +58,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import Navigate from './non-route/navigate.vue'
 import Footer from './non-route/footer.vue'
+import {
+    backend_path,
+    img_path
+} from '../assets/config.js'
 
 export default {
     components: {
@@ -98,7 +102,7 @@ export default {
                 this.email != '') {
                 var httpRequest = new XMLHttpRequest()
                 var vm = this
-                httpRequest.open('POST', 'http://localhost:8080/SOFT130002_Project2/backend/register.php', true)
+                httpRequest.open('POST', backend_path + 'register.php', true)
                 httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
                 httpRequest.send('username=' + this.username + '&password=' + this.password + '&email=' + this.email)
                 httpRequest.onreadystatechange = function () {
@@ -123,7 +127,7 @@ export default {
             if (reg.test(this.username)) {
                 var httpRequest = new XMLHttpRequest()
                 var vm = this
-                httpRequest.open('GET', 'http://localhost:8080/SOFT130002_Project2/backend/checkUserName.php?username=' + this.username, true)
+                httpRequest.open('GET', backend_path + 'checkUserName.php?username=' + this.username, true)
                 httpRequest.send()
                 httpRequest.onreadystatechange = function () {
                     if (httpRequest.readyState == 4 && httpRequest.status == 200) {

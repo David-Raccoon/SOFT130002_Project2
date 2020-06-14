@@ -1,44 +1,52 @@
 <template>
 <div>
     <Navigate />
-    <div class="container">
-        <div class="card">
-            <div class="card-header bg-secondary text-light">Search</div>
-            <div class="card-body">
-                <form>
-                    <div class="radio">
-                        <label><input type="radio" value="byTitle" v-model="method">Search by title</label>
-                    </div>
-                    <input type="text" class="form-control" v-model="searchTitle">
-                    <div class="radio">
-                        <label><input type="radio" value="byDescription" v-model="method">Search by description</label>
-                    </div>
-                    <textarea class="form-control" rows="3" v-model="searchDescription"></textarea>
-                </form>
-                <button class="btn btn-success" @click="search">search</button>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header bg-secondary text-light">Result</div>
-            <div class="card-body border">
-                <div class="row border" v-for="i in 5" :key="i" v-show="i+5*(currentPage-1)<=resultCount">
-                    <div class="col-3 ">
-                        <a href="#" @click="details(src[i-1+5*(currentPage-1)])">
-                            <img :src="src[i-1+5*(currentPage-1)]">
-                        </a>
-                    </div>
-                    <div class="col-9">
-                        <p>{{title[i-1+5*(currentPage-1)]}}</p>
-                        <p>{{description[i-1+5*(currentPage-1)]}}</p>
-                    </div>
-                </div>
-                <div class="btn-group btn-group-sm">
-                    <button type="button" v-show="pageCount>=1" class="btn btn-primary" @click="turnToPage(currentPage-1)">《</button>
-                    <button type="button" v-for="i in pageCount" :key="i" :id="i" class="btn btn-primary" @click="turnToPage(i)">{{i}}</button>
-                    <button type="button" v-show="pageCount>=1" class="btn btn-primary" @click="turnToPage(currentPage+1)">》</button>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header bg-secondary text-light">Search</div>
+                <div class="card-body">
+                    <form>
+                        <div class="radio">
+                            <label><input type="radio" value="byTitle" v-model="method">Search by title</label>
+                        </div>
+                        <input type="text" class="form-control" v-model="searchTitle">
+                        <div class="radio">
+                            <label><input type="radio" value="byDescription" v-model="method">Search by description</label>
+                        </div>
+                        <textarea class="form-control" rows="3" v-model="searchDescription"></textarea>
+                    </form>
+                    <br />
+                    <button class="btn btn-success form-control" @click="search">search</button>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-header bg-secondary text-light">Result</div>
+                <div class="card-body border">
+                    <div class="row border" v-for="i in pageSize" :key="i" v-show="i+pageSize*(currentPage-1)<=resultCount">
+                        <div class="col-3 ">
+                            <a href="#" @click="details(src[i-1+pageSize*(currentPage-1)])">
+                                <img :src="src[i-1+pageSize*(currentPage-1)]">
+                            </a>
+                        </div>
+                        <div class="col-9">
+                            <p>{{title[i-1+pageSize*(currentPage-1)]}}</p>
+                            <p class="description">{{description[i-1+pageSize*(currentPage-1)]}}</p>
+                        </div>
+                    </div>
+                    <br>
+                    <div style="text-align:center">
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" v-show="pageCount>=1" class="btn btn-primary" @click="turnToPage(currentPage-1)">《</button>
+                            <button type="button" v-for="i in pageCount" :key="i" :id="i" class="btn btn-primary" @click="turnToPage(i)">{{i}}</button>
+                            <button type="button" v-show="pageCount>=1" class="btn btn-primary" @click="turnToPage(currentPage+1)">》</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="col-2"></div>
     </div>
     <Footer />
 </div>
@@ -50,6 +58,10 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import Vue from 'vue'
 import Navigate from './non-route/navigate.vue'
 import Footer from './non-route/footer.vue'
+import {
+    backend_path,
+    img_path
+} from '../assets/config.js'
 
 export default {
     components: {
@@ -67,7 +79,7 @@ export default {
             pageCount: 1,
             resultCount: 0,
             currentPage: 1,
-            pageSize: 8,
+            pageSize: 5,
         }
     },
     methods: {
@@ -84,7 +96,7 @@ export default {
         searchByTitle(keyword) {
             var httpRequest = new XMLHttpRequest()
             var vm = this
-            httpRequest.open('GET', 'http://localhost:8080/SOFT130002_Project2/backend/searchByTitle.php?keyword=' + keyword, true)
+            httpRequest.open('GET', backend_path + 'searchByTitle.php?keyword=' + keyword, true)
             httpRequest.send()
             httpRequest.onreadystatechange = function () {
                 if (httpRequest.readyState == 4 && httpRequest.status == 200) {
@@ -95,7 +107,7 @@ export default {
                     for (let key in res) {
                         if (res[key] == "")
                             continue
-                        Vue.set(vm.src, key, "http://localhost:8080/SOFT130002_Project2/travel-images/square/" + res[key].split(':')[0])
+                        Vue.set(vm.src, key, img_path + 'square/' + res[key].split(':')[0])
                         Vue.set(vm.title, key, res[key].split(':')[1])
                         Vue.set(vm.description, key, res[key].split(':')[2])
                     }
@@ -107,7 +119,7 @@ export default {
         searchByDescription(keyword) {
             var httpRequest = new XMLHttpRequest()
             var vm = this
-            httpRequest.open('GET', 'http://localhost:8080/SOFT130002_Project2/backend/searchByDescription.php?keyword=' + keyword, true)
+            httpRequest.open('GET', backend_path + 'searchByDescription.php?keyword=' + keyword, true)
             httpRequest.send()
             httpRequest.onreadystatechange = function () {
                 if (httpRequest.readyState == 4 && httpRequest.status == 200) {
@@ -118,7 +130,7 @@ export default {
                     for (let key in res) {
                         if (res[key] == "")
                             continue
-                        Vue.set(vm.src, key, "http://localhost:8080/SOFT130002_Project2/travel-images/square/" + res[key].split(':')[0])
+                        Vue.set(vm.src, key, img_path + 'square/' + res[key].split(':')[0])
                         Vue.set(vm.title, key, res[key].split(':')[1])
                         Vue.set(vm.description, key, res[key].split(':')[2])
                     }
@@ -157,4 +169,11 @@ export default {
 </script>
 
 <style scoped>
+.description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
 </style>

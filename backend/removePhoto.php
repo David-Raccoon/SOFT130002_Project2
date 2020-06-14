@@ -16,8 +16,8 @@ mysqli_query($connection, $sql);
 
 $sql = 'DELETE FROM travelimage WHERE PATH="' . $_GET['src'] . '"';
 if (mysqli_query($connection, $sql)) {
-    $originFile = "C:\\xampp\\htdocs\\SOFT130002_Project2\\travel-images\\origin\\" . $_GET['src'];
-    $squareFile = "C:\\xampp\\htdocs\\SOFT130002_Project2\\travel-images\\square\\" . $_GET['src'];
+    $originFile = UPLOAD_PATH . "origin/" . $_GET['src'];
+    $squareFile = UPLOAD_PATH . "square/" . $_GET['src'];
     if (!unlink($originFile)) {
         echo ("Error deleting $originFile");
     } else if (!unlink($squareFile)) {

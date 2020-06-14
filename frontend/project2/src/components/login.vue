@@ -26,6 +26,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import Navigate from './non-route/navigate.vue'
 import Footer from './non-route/footer.vue'
+import {
+    backend_path,
+    img_path
+} from '../assets/config.js'
 
 export default {
     components: {
@@ -45,7 +49,7 @@ export default {
                 return;
             var httpRequest = new XMLHttpRequest()
             var vm = this
-            httpRequest.open('POST', 'http://localhost:8080/SOFT130002_Project2/backend/login.php', true)
+            httpRequest.open('POST', backend_path + 'login.php', true)
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
             httpRequest.send('username=' + this.username + '&password=' + this.password)
             httpRequest.onreadystatechange = function () {

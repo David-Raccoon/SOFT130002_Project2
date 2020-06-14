@@ -41,15 +41,15 @@ if (!array_key_exists('img', $_FILES)) {
     // 生成图片名
     $imgName = date('Y_m_d_h_i_s_', time()) . $_POST['username'] . ".jpg";
     // 保存图片和裁剪后的图片
-    $originPath = "C:\\xampp\\htdocs\\SOFT130002_Project2\\travel-images\\origin\\" . $imgName;
-    $squarePath = "C:\\xampp\\htdocs\\SOFT130002_Project2\\travel-images\\square\\" . $imgName;
+    $originPath = UPLOAD_PATH . "origin/" . $imgName;
+    $squarePath = UPLOAD_PATH . "square/" . $imgName;
     move_uploaded_file($_FILES["img"]["tmp_name"], $originPath);
     img_cut_square($originPath, $squarePath, 150);
 
     // 删除原图
     $originName = $_POST['originName'];
-    $originFile = "C:\\xampp\\htdocs\\SOFT130002_Project2\\travel-images\\origin\\" . $originName;
-    $squareFile = "C:\\xampp\\htdocs\\SOFT130002_Project2\\travel-images\\square\\" . $originName;
+    $originFile = UPLOAD_PATH . "origin/" . $originName;
+    $squareFile = UPLOAD_PATH . "square/" . $originName;
     if (!unlink($originFile)) {
         echo ("Error deleting $originFile");
     } else if (!unlink($squareFile)) {
